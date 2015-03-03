@@ -5,7 +5,7 @@
 
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 {
-  int level = 0.65;
+  int level = 0.65; // thresh holding constant
   int width = 0;
   int locx = -1;
   int flag = 0;
@@ -14,8 +14,10 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
   int digits = round(width/175);
   
 
-  //IplImage* cvLoadImage (const char * filenae, int iscolor=CV_LOAD_IMAGE_GRAYSCALE)
-  //Skiping reading in the image and coverting it to greyscale and then binary ect. 
+  //LOAD IMAGE????
+  oImage = tograyscale (Image); // convert to gray scale ?
+ //oImage = mmbinary(oImage, level); // convert to binary ?
+  
 
     while (locx = -1)
       {
@@ -56,4 +58,28 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 
       total = total + z4;
     }
+}
+
+grayimage tograyscale(image img)
+{
+   unsigned int x, y;
+   grayimage timg;
+   double rc, gc, bc, l;
+   unsigned int ofs;
+ 
+   timg = alloc_grayimg(img->width, img->height);
+ 
+   for(x=0; x < img->width; x++)
+   {
+      for(y=0; y < img->height; y++)
+      {
+        ofs = (y * img->width) + x;
+        rc = (double) img->buf[ofs][0];
+        gc = (double) img->buf[ofs][1];
+        bc = (double) img->buf[ofs][2];
+        l = 0.2126*rc + 0.7152*gc + 0.0722*bc;
+        timg->buf[ofs][0] = (luminance) (l+0.5);
+      }
+   }
+   return timg;
 }
