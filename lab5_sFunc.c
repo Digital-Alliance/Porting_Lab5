@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <image.h>
 
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 {
-  int level = 0.65; // thresh holding constant
+  int level = 0.65; // thresholding constant
   int width = 0;
   int locx = -1;
   int flag = 0;
@@ -13,11 +14,57 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
   int z1, z2, z3, z4, total = 0;
   int digits = round(width/175);
   
+// Attempt to load image
+void Img_IO (struct Image *IO, char *filename, char dir)
 
-  //LOAD IMAGE????
-  oImage = tograyscale (Image); // convert to gray scale ?
- //oImage = mmbinary(oImage, level); // convert to binary ?
+{
+	FILE *fp;
+	int i, sz_pix;
+	
+	if(dir)
+		/* open (or create) a file for read */
+		fp = fopen(filename, "rb");
+	
+	else
+		/* open (or create) a file for write */
+		fp = fopen(filename, "wb");
+	
+	switch (IO->Type)
+	{
+		case BASIC:
+			sz_pix = sizeof(unsigned char);
+			break;
+		
+		case UINT:
+			sz_pix = sizeof(unsigned int);
+			break;
+		
+		case REAL:
+			sz_pix = sizeof(float);
+			break;
+		
+		case CMPLX:
+			sz_pix = 2*sizeof(float);
+			break;
+	}
+	
+	/* process the image by rows */
+	for (i=0; i<IO->Rows;  ++i)
+		if(dir)
+			fread(IO->Data + i*IO->Cols, IO->Cols,  sz_pix, fp);
+		
+		else
+			fwrite(IO->Data + i*IO->Cols, IO->Cols, sz_pix, fp);
+	
+	fclose(fp);
+}
   
+
+  Img_in(??); //LOAD IMAGE????
+  //Img_out(??) if we need/want to ourput the image
+  oImage = tograyscale (Image); // convert to gray scale ?
+  Threshold (oImage, oImage1, level); // convert to binary ?
+  oImage = ~oImage1;
 
     while (locx = -1)
       {
@@ -83,3 +130,24 @@ grayimage tograyscale(image img)
    }
    return timg;
 }
+
+Threshold(strict Image *IMAGE, stuct Image *IMAGE1, int THRES) //Converts to binary image??
+{
+	int X, Y, GO, GB;
+	GO = 225;
+	GB = 0;
+	
+	for (Y=0; y<=IMAGE->Rows; Y++)
+	{
+		for(X = 0; X <= IMAGE->Cols; X++)
+		{
+			if (*(IMAGE1->Data+X+(long)Y*IMAGE->Cols)>THRES)
+				*(IMAGE1->Data+X+(long)Y*IMAGE->Cols)= GO;
+			else
+				*(IMAGE1->Data+X+(long)Y*IMAGE->Cols)= GB;
+		}
+	}
+	
+	
+}
+
