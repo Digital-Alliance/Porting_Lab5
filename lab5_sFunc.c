@@ -1,77 +1,39 @@
-#include <file.h>
+//#include <files.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <image.h>
+//#include <image.h>
 
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 {
   int level = 0.65; // thresholding constant
   int width = 0;
   int locx = -1;
+  int locy;
   int flag = 0;
-  int i, j = 0;
+  int i, j, l = 1;
   int z1, z2, z3, z4, total = 0;
   int digits = round(width/175);
-  
-// Attempt to load image
-void Img_IO (struct Image *IO, char *filename, char dir)
 
-{
-	FILE *fp;
-	int i, sz_pix;
-	
-	if(dir)
-		/* open (or create) a file for read */
-		fp = fopen(filename, "rb");
-	
-	else
-		/* open (or create) a file for write */
-		fp = fopen(filename, "wb");
-	
-	switch (IO->Type)
-	{
-		case BASIC:
-			sz_pix = sizeof(unsigned char);
-			break;
-		
-		case UINT:
-			sz_pix = sizeof(unsigned int);
-			break;
-		
-		case REAL:
-			sz_pix = sizeof(float);
-			break;
-		
-		case CMPLX:
-			sz_pix = 2*sizeof(float);
-			break;
-	}
-	
-	/* process the image by rows */
-	for (i=0; i<IO->Rows;  ++i)
-		if(dir)
-			fread(IO->Data + i*IO->Cols, IO->Cols,  sz_pix, fp);
-		
-		else
-			fwrite(IO->Data + i*IO->Cols, IO->Cols, sz_pix, fp);
-	
-	fclose(fp);
-}
+  float Image[640][480];
+  float oImage[640][480];
+  float oImage1[640][480];
+  float image[640][480];
+  float image1[640][480];
   
-
-  Img_in(??); //LOAD IMAGE????
+  
+  // Img_in(??); //LOAD IMAGE????
   //Img_out(??) if we need/want to ourput the image
-  oImage = tograyscale (Image); // convert to gray scale ?
-  Threshold (oImage, oImage1, level); // convert to binary ?
-  oImage = ~oImage1;
+  //oImage = tograyscale (Image); // convert to gray scale ?
+  //Threshold (oImage, oImage1, level); // convert to binary ?
+  // oImage = ~oImage1;
 
     while (locx = -1)
       {
 	i = i++;
 	for (j=1; j<=3180; j++)
 	  {
-	    if(image[i,j]=0)
+	    if(image[i][j]=0)
 	      width++;
 	    if (width > 200 && flag <1)
 	      {
@@ -94,23 +56,62 @@ void Img_IO (struct Image *IO, char *filename, char dir)
 	  }
    
       }
-  for (l = 1, l<=digits, l++)
+    for (l = 1; l<=digits; l++)
     {
       total = total *10;
 
-      z1 = 1/(1+exp(-(finalW1L1*image1+finalB1L1))); 
+    /*z1 = 1/(1+exp(-(finalW1L1*image1+finalB1L1))); 
       z2 = 1/(1+exp(-(finalW1L2*z1+finalB1L2)));
       z3 = finalSoftmaxTheta *z2;
       z4 = mod(find(z3 == max(z3)), 10);
 
-      total = total + z4;
+      total = total + z4;*/
     }
 }
 
-grayimage tograyscale(image img)
+// SCALING ALGORITHM
+#define FLT_MAX 99999999
+#define FLT_MIN -99999999
+
+void Scale(struct Image *In, struct Image *Out)
+{
+  float min, max, *InD, *OuD;
+  long ImSize, i;
+
+  min = FLT_MAX;
+  max = FLT_MIN;
+  InD = (float *)In->Data;
+  ImSize = In->Rows * In->Cols;
+
+  //Scan input for min/max values
+  for(i=0; i<ImSize; ++i)
+    {
+      if(*InD<min)
+	min = *InD;
+      if(*InD>max)
+	max = *InD;
+      ++InD;
+    }
+
+  InD = (float *)In->Data;
+  OuD = (float *)Out->Data;
+
+  //scale the output
+  for(i=0; i<ImSize; ++i)
+    *OuD = (255/(max-min))*(*InD-min);
+}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                           Stuff We Might Not need                                              //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*array tograyscale(img)
 {
    unsigned int x, y;
-   grayimage timg;
+   grayimage timg;// undeclared
    double rc, gc, bc, l;
    unsigned int ofs;
  
@@ -150,4 +151,49 @@ Threshold(strict Image *IMAGE, stuct Image *IMAGE1, int THRES) //Converts to bin
 	
 	
 }
+
+// Attempt to load image
+    void Img_IO (struct *IO[],char *filename[],char dir)
+
+{
+	FILE *fp;
+	int i, sz_pix;
+	
+	if(dir)
+	  // open (or create) a file for read 
+		fp = fopen(filename, "rb");
+	
+	else
+	  // open (or create) a file for write
+		fp = fopen(filename, "wb");
+	
+	switch (IO->Type)
+	{
+		case BASIC:
+			sz_pix = sizeof(unsigned char);
+			break;
+		
+		case UINT:
+			sz_pix = sizeof(unsigned int);
+			break;
+		
+		case REAL:
+			sz_pix = sizeof(float);
+			break;
+		
+		case CMPLX:
+			sz_pix = 2*sizeof(float);
+			break;
+	}
+	
+	// process the image by rows
+	for (i=0; i<IO->Rows;  ++i)
+		if(dir)
+			fread(IO->Data + i*IO->Cols, IO->Cols,  sz_pix, fp);
+		
+		else
+			fwrite(IO->Data + i*IO->Cols, IO->Cols, sz_pix, fp);
+	
+	fclose(fp);
+}*/
 
