@@ -1,8 +1,8 @@
-//http://adaptiveart.eecs.umich.edu/2011/wp-content/uploads/2011/09/The-pocket-handbook-of-image-processing-algorithms-in-C.pdf
 //#include <files.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 //#include <image.h>
 
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
@@ -61,6 +61,7 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
     {
       total = total *10;
 
+//WEIGHT STUFF: DO IN VERILOG?
     /*z1 = 1/(1+exp(-(finalW1L1*image1+finalB1L1))); 
       z2 = 1/(1+exp(-(finalW1L2*z1+finalB1L2)));
       z3 = finalSoftmaxTheta *z2;
@@ -68,6 +69,11 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 
       total = total + z4;*/
     }
+}
+
+//GOT TO DO THIS
+void column_sum()
+{
 }
 
 // SCALING ALGORITHM
@@ -197,4 +203,3 @@ Threshold(strict Image *IMAGE, stuct Image *IMAGE1, int THRES) //Converts to bin
 	
 	fclose(fp);
 }*/
-
