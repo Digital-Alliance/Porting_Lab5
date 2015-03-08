@@ -112,7 +112,7 @@ void Scale(struct Image *In, struct Image *Out)
     *OuD = (255/(max-min))*(*InD-min);
 }
 
-
+// GOT TO DO TOMORROW
 // Parse through and get each W1L1 weight for the nural network
 const int* getWeight_wW1L1 (input)
 {
