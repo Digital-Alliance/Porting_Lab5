@@ -8,21 +8,24 @@
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 {
   int level = 0.65; // thresholding constant
-  int width = 0;
+  int width, height = 0;''
   int locx = -1;
   int locy;
   int flag = 0;
   int i, j, l = 1;
   int z1, z2, z3, z4, total = 0;
-  int digits = round(width/175);
+  int digits = round(width/height);
 
   float Image[640][480];
   float oImage[640][480];
   float oImage1[640][480];
   float image[640][480];
   float image1[640][480];
-  
-  
+
+  ////////////////////////////
+  // ALL DONE IN VERILOG?!?!//
+  ////////////////////////////
+
   // Img_in(??); //LOAD IMAGE????
   //Img_out(??) if we need/want to ourput the image
   //oImage = tograyscale (Image); // convert to gray scale ?
@@ -57,6 +60,12 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 	  }
    
       }
+      
+      while (oImage(locy + height, locx)== 0)
+      		height = height + 1;
+
+     oImage2 = image(locy: locy+height, locx;locx+ width);
+
     for (l = 1; l<=digits; l++)
     {
       total = total *10;
@@ -69,12 +78,7 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 
       total = total + z4;*/
     }
-}
-
-//GOT TO DO THIS
-void column_sum()
-{
-}
+} 
 
 // SCALING ALGORITHM
 #define FLT_MAX 99999999
@@ -109,7 +113,20 @@ void Scale(struct Image *In, struct Image *Out)
 }
 
 
+// Parse through and get each W1L1 weight for the nural network
+const int* getWeight_wW1L1 (input)
+{
+ int i, j = 1;
+ float weight[640][480] = 0;
 
+ while (i= 1; i <= 640; i++)
+ {
+ 	while (j=1; j <=480; j++)
+ 	{
+ 		weight[i][j] = strtok(imput, ",");
+ 	}
+ }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,4 +219,29 @@ Threshold(strict Image *IMAGE, stuct Image *IMAGE1, int THRES) //Converts to bin
 			fwrite(IO->Data + i*IO->Cols, IO->Cols, sz_pix, fp);
 	
 	fclose(fp);
+}
+
+//GOT TO DO THIS
+void column_sum (image)
+{
+	int j, i = 1;
+	float sum [640] = 0;
+	float image[640][480];
+
+	while (i<=640)
+	{
+		for (j = 1, j<=480, j++)
+		{
+			sum[i] = sum[i] + image[i][j];
+
+			if (sum[i] = 0) // whole column is white
+			{}
+			if(sum[i] = 640) // whole column is black
+			{}
+			if (sum[i] = 160) //region of interest is probably in this column
+			{}
+		}
+		i++
+	}
+	return(sum);
 }*/
