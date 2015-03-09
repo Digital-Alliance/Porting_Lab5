@@ -8,9 +8,10 @@
 int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 {
   int level = 0.65; // thresholding constant
-  int width, height = 0;''
+  int width, height = 0;
   int locx = -1;
   int locy;
+  int x, y = 0;
   int flag = 0;
   int i, j, l = 1;
   int z1, z2, z3, z4, total = 0;
@@ -19,6 +20,7 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
   float Image[640][480];
   float oImage[640][480];
   float oImage1[640][480];
+  float oImage2[640][480];
   float image[640][480];
   float image1[640][480];
 
@@ -61,10 +63,15 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
    
       }
       
-      while (oImage(locy + height, locx)== 0)
+      while (oImage[locy + height, locx]== 0)
       		height = height + 1;
-
-     oImage2 = image(locy: locy+height, locx;locx+ width);
+      for (y = locy; y <= locy+height; y++)
+	{
+	  for (x = locx; x= locx+width; x++)
+	    {
+	      oImage2[y][x] = image[y][x];
+	    }
+	}
 
     for (l = 1; l<=digits; l++)
     {
@@ -84,7 +91,7 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
 #define FLT_MAX 99999999
 #define FLT_MIN -99999999
 
-void Scale(struct Image *In, struct Image *Out)
+void Scale(struct Image *In, struct Image *Out) // THIS NEEDS TO BE FIXED
 {
   float min, max, *InD, *OuD;
   long ImSize, i;
@@ -112,21 +119,62 @@ void Scale(struct Image *In, struct Image *Out)
     *OuD = (255/(max-min))*(*InD-min);
 }
 
-// GOT TO DO TOMORROW
 // Parse through and get each W1L1 weight for the nural network
-const int* getWeight_wW1L1 (input)
+const int* getWeight_W1L1 (input)
 {
  int i, j = 1;
- float weight[640][480] = 0;
+ float weight1[640][480];
 
- while (i= 1; i <= 640; i++)
+ for(i= 1; i <= 640; i++)
  {
- 	while (j=1; j <=480; j++)
+ 	for (j=1; j <=480; j++)
  	{
- 		weight[i][j] = strtok(imput, ",");
+ 		weight1[i][j] = strtok(input, ",");
  	}
  }
 }
+
+// Parse through and get each B1L1 weight for the nural network
+const int* getBais_B1L1 (input)
+{
+ int i, j = 1;
+ float bais1[640][480];
+
+ for(i= 1; i <= 640; i++)
+ {
+ 	for (j=1; j <=480; j++)
+ 	{
+ 		bais1[i][j] = strtok(input, ",");
+ 	}
+ }
+}
+
+// Parse through and get each W1L2 weight for the nural network
+const int* getWeight_W1L2 (input)
+{
+ int i = 1;
+ float weight2[200];
+
+ for(i= 1; i <= 200; i++)
+ {
+ 	weight2[i] = strtok(input, ",");
+ }
+}
+
+// Parse through and get each W1L2 weight for the nural network
+const int* getBais_B1L2 (input)
+{
+ int i = 1;
+ float bias2[200];
+
+ for(i= 1; i <= 200; i++)
+ {
+ 	bais2[i] = strtok(input, ",");
+ }
+}
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
