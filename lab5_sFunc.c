@@ -87,8 +87,45 @@ int sFunc (finalB1L1, finalB1L2, finalW1L1, finalW1L2, finaSoftmaxTheta)
     }
 } 
 
-// SCALING ALGORITHM
-#define FLT_MAX 99999999
+void bilinear_interpolate(the_image, x, y, rows, cols) // SCALE INFO 
+double x, y;
+long cols, rows;
+short **the_image;
+{
+double fraction_x, fraction_y,
+one_minus_x, one_minus_y,
+tmp_double;
+int
+ceil_x, ceil_y, floor_x, floor_y;
+short p1, p2, p3, result;
+
+if(x < 0.0||x >= (double)(cols-1)||y < 0.0||y >= (double)(rows-1))
+return(result);
+ tmp_double =  floor(x);
+ floor_x = tmp_double;
+ tmp_double = floor(y);
+ floor_y = tmp_double;
+  tmp_double = ceil(y);
+  ceil_x = tmp_double;
+  tmp_double = ceil(y);
+  ceil_y = tmp_double;
+
+fraction_x = x - floor(x);
+fraction_y = y - floor(y);
+one_minus_x = 1.0 - fraction_x;
+one_minus_y = 1.0 - fraction_y;
+
+tmp_double = one_minus_x *(double)(the_image[floor_y][floor_x]) +fraction_x *(double)(the_image[floor_y][ceil_x]);
+p1= tmp_double;
+tmp_double = one_minus_x *(double)(the_image[ceil_y][floor_x]) +fraction_x *(double)(the_image[ceil_y][ceil_x]);
+p2= tmp_double;
+tmp_double = one_minus_y * (double)(p1) +fraction_y * (double)(p2);
+p3= tmp_double;
+return(p3);
+}
+
+
+/*define FLT_MAX 99999999
 #define FLT_MIN -99999999
 
 void Scale(struct Image *In, struct Image *Out) // THIS NEEDS TO BE FIXED
@@ -117,9 +154,9 @@ void Scale(struct Image *In, struct Image *Out) // THIS NEEDS TO BE FIXED
   //scale the output
   for(i=0; i<ImSize; ++i)
     *OuD = (255/(max-min))*(*InD-min);
-}
+    }*/
 
-// Parse through and get each W1L1 weight for the nural network
+ /*/ Parse through and get each W1L1 weight for the nural network
 const int* getWeight_W1L1 (input)
 {
  int i, j = 1;
@@ -171,7 +208,7 @@ const int* getBais_B1L2 (input)
  {
  	bais2[i] = strtok(input, ",");
  }
-}
+ }*/
 
 
 
